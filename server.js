@@ -1,6 +1,8 @@
 var express = require('express');
 var routes = require('./src/routes/routes.js');
 
+var apikey = config.API_KEY;
+
 var app =  express();
 
 routes(app, process.env);
