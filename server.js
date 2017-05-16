@@ -1,44 +1,11 @@
-var express = require('express')
+var express = require('express');
+var routes = require('./src/routes/routes.js');
+
 var app =  express();
 
+routes(app, process.env);
+
 app.set('port', (process.env.PORT || 8080));
-
-app.get('/', function(req, res) {
-	res.send(
-		'<h1>Image Search API</h1>' +
-		'<br>' +
-		'<br>' +
-		'To search for image data use:' +
-		'<br>' +
-		'<br>' +
-		'<code>appurl/imagesearch/[search query]</code>' +
-		'<br>' +
-		'<br>' +
-		'Can also use the option URL parameter "?offset=x" to paginate search results' +
-		'<br>' +
-		'<br>' +
-		'<br>' +
-		'<br>' +
-		'To view the last 10 search strings use:' +
-		'<br>' +
-		'<br>' +
-		'<code>appurl/latest/imagesearch/</code>' +
-		'<br>' +
-		'<br>'
-	);
-});
-
-app.get('/latest/imagesearch', function(req, res) {
-	res.send(
-		'Last 10 image search strings...'
-	);
-});
-
-app.get('/imagesearch/:searchstr(*)', function(req, res) {
-	res.send(
-		'Image search by search string...'
-	);
-});
 
 app.listen(process.env.PORT || 8080, function() {
 	console.log("Server Listening on Port 8080");
