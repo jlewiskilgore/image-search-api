@@ -2,7 +2,7 @@ var express = require('express');
 var routes = require('./src/routes/routes.js');
 var config = require('./config.js');
 
-var apikey = config.API_KEY;
+var apikey = config.config.API_KEY;
 
 var MongoClient = require('mongodb').MongoClient;
 var dbURL = process.env.MONGOLAB_URL;
@@ -17,6 +17,7 @@ MongoClient.connect((dbURL || 'mongodb://localhost:27017/imagesearchdb'), functi
 });
 
 var app =  express();
+app.locals.apikey = apikey;
 
 routes(app, process.env);
 

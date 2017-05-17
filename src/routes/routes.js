@@ -31,6 +31,10 @@ module.exports = function(app, env) {
 	});
 
 	app.get('/imagesearch/:searchstr(*)', function(req, res) {
+		console.log(req.params.searchstr);
+
+		var apikey = req.app.locals.apikey;
+
 		res.send(
 			'Image search by search string...'
 		);
