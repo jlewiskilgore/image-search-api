@@ -1,3 +1,5 @@
+var https = require('https');
+
 module.exports = function(app, env) {
 	app.get('/', function(req, res) {
 		res.send(
@@ -33,10 +35,20 @@ module.exports = function(app, env) {
 	app.get('/imagesearch/:searchstr(*)', function(req, res) {
 		console.log(req.params.searchstr);
 
-		var apikey = req.app.locals.apikey;
+		var imageQueryStr = req.params.searchstr;
+		var apiKey = req.app.locals.apikey;
 
-		res.send(
-			'Image search by search string...'
-		);
+		https.get('https://pixabay.com/api/?key=' + apiKey + '&q=' + imageQueryStr, function(result) {
+			var body = '';
+
+			result.on('data', function(data) {
+				body += data;
+			});
+
+			result.on('end', function() {
+				var imageApiResult = JSON.parse(body);
+				res.send(imageApiResult);
+			});
+		});
 	});
 };
