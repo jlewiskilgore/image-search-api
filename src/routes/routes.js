@@ -37,8 +37,18 @@ module.exports = function(app, env) {
 
 		var imageQueryStr = req.params.searchstr;
 		var apiKey = req.app.locals.apikey;
+		
+		var baseApiUrl = 'https://pixabay.com/api/?key=';
+		var apiRequestUrl = baseApiUrl + apiKey  + '&q=' + imageQueryStr;
 
-		https.get('https://pixabay.com/api/?key=' + apiKey + '&q=' + imageQueryStr, function(result) {
+		if(req.query.offset) {
+			var resultsPage = req.query.offset;
+			apiRequestUrl += '&page=' + resultsPage;
+		}
+
+		console.log(apiRequestUrl);
+
+		https.get(apiRequestUrl, function(result) {
 			var body = '';
 
 			result.on('data', function(data) {
