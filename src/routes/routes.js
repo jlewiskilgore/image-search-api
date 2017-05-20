@@ -76,6 +76,7 @@ module.exports = function(app, env) {
 					resultHitArr.push(resultHit);
 				}
 
+				saveSearchHistory(req);
 				res.send(resultHitArr);
 			});
 		});
@@ -84,4 +85,28 @@ module.exports = function(app, env) {
 	app.get('*', function(req, res) {
 		res.redirect('/');
 	});
+};
+
+function saveSearchHistory(req) {
+	console.log("saving history...");
+	var db = req.db;
+	var searchHistory = db.collection('searchHistory');
+
+	var currDate = new Date();
+	var searchStr = req.params.searchstr;
+
+	var search = {
+		"searchDate": currDate,
+		"searchString": searchStr
+	};
+
+	searchHistory.insert(search, function(err, res) {
+		if(err) {
+			throw err;
+		}
+		console.log("Search Saved!");
+	});
+
+	console.log(currDate);
+	console.log(searchStr);
 };

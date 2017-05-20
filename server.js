@@ -14,15 +14,21 @@ MongoClient.connect((dbURL || 'mongodb://localhost:27017/imagesearchdb'), functi
 	else if(err) {
 		console.log(err);
 	}
-});
 
-var app =  express();
-app.locals.apikey = apikey;
+	var app =  express();
+	app.locals.apikey = apikey;
 
-routes(app, process.env);
+	// Database middleware function with no mount path
+	app.use(function(req, res, next) {
+		req.db = db;
+		next();
+	});
 
-app.set('port', (process.env.PORT || 8080));
+	routes(app, process.env);
 
-app.listen(process.env.PORT || 8080, function() {
-	console.log("Server Listening on Port 8080");
+	app.set('port', (process.env.PORT || 8080));
+
+	app.listen(process.env.PORT || 8080, function() {
+		console.log("Server Listening on Port 8080");
+	});
 });
