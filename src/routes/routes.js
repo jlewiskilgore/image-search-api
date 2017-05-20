@@ -12,9 +12,17 @@ module.exports = function(app, env) {
 			'<code>appurl/imagesearch/[search query]</code>' +
 			'<br>' +
 			'<br>' +
-			'Can also use the option URL parameter "?offset=x" to paginate search results' +
+			'Can also use the option URL parameter "?offset=x" to paginate search results:' +
 			'<br>' +
 			'<br>' +
+			'<code>appurl/imagesearch/[search query]?offset=2</code>' +
+			'<br>' +
+			'<br>' +
+			'This will return a JSON response where each element is a struct containing the following: ' +
+			'<br>' +
+			'<ul>imageURL - URL to the full image</ul>' +
+			'<ul>imagePreviewURL - URL to the preview image</ul>' +
+			'<ul>imageDescriptionTags - Tags that describe the image</ul>' +
 			'<br>' +
 			'<br>' +
 			'To view the last 10 search strings use:' +
