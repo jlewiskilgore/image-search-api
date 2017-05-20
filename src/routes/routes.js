@@ -33,20 +33,19 @@ module.exports = function(app, env) {
 	});
 
 	app.get('/imagesearch/:searchstr(*)', function(req, res) {
-		console.log(req.params.searchstr);
-
 		var imageQueryStr = req.params.searchstr;
 		var apiKey = req.app.locals.apikey;
 		
 		var baseApiUrl = 'https://pixabay.com/api/?key=';
 		var apiRequestUrl = baseApiUrl + apiKey  + '&q=' + imageQueryStr;
 
+		var resultHit;
+		var resultHitArr = [];
+
 		if(req.query.offset) {
 			var resultsPage = req.query.offset;
 			apiRequestUrl += '&page=' + resultsPage;
 		}
-
-		console.log(apiRequestUrl);
 
 		https.get(apiRequestUrl, function(result) {
 			var body = '';
@@ -57,7 +56,19 @@ module.exports = function(app, env) {
 
 			result.on('end', function() {
 				var imageApiResult = JSON.parse(body);
-				res.send(imageApiResult);
+
+				console.log("Length: " + imageApiResult.hits.length);
+				for(var i=0; i < imageApiResult.hits.length; i++) {
+					resultHit = {
+						"imageURL": imageApiResult.hits[i].userImageURL,
+						"imagePreviewURL": imageApiResult.hits[i].previewURL,
+						"imageDescriptionTags": imageApiResult.hits[i].tags
+					};
+
+					resultHitArr.push(resultHit);
+				}
+
+				res.send(resultHitArr);
 			});
 		});
 	});
