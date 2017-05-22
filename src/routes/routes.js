@@ -36,10 +36,24 @@ module.exports = function(app, env) {
 	});
 
 	app.get('/latest/imagesearch', function(req, res) {
-		var latestHistory = getLatestSearchHistory(req);
+		var db = req.db;
+		var searchHistory = db.collection('searchHistory');
 
-		console.log(latestHistory);
-		res.send(latestHistory);
+		searchHistory.find().sort({'searchDate':-1}).limit(10).toArray(function(error, result) {
+			var latestHistory = [];
+			var search;
+			
+			for(var i=0; i<result.length; i++) {
+				search = {
+					"searchDate": result[i].searchDate,
+					"searchString": result[i].searchString
+				};
+
+				latestHistory.push(search);
+			}
+
+			res.send(latestHistory);
+		});
 	});
 
 	app.get('/imagesearch/:searchstr(*)', function(req, res) {
@@ -112,16 +126,3 @@ function saveSearchHistory(req) {
 	console.log(currDate);
 	console.log(searchStr);
 };
-
-function getLatestSearchHistory(req) {
-	var db = req.db;
-	var searchHistory = db.collection('searchHistory');
-	var latestHistory = [];
-
-	searchHistory.find().sort({'searchDate':-1}).limit(10).forEach(function(result) {
-		console.log(result);
-		latestHistory.push(result);
-	});
-
-	return latestHistory;
-} 
