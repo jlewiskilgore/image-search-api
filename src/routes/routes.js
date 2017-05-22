@@ -10,13 +10,13 @@ module.exports = function(app, env) {
 			'To search for image data use:' +
 			'<br>' +
 			'<br>' +
-			'<code>appurl/imagesearch/[search query]</code>' +
+			'<code>https://thawing-atoll-20447.herokuapp.com/imagesearch/[search query]</code>' +
 			'<br>' +
 			'<br>' +
 			'Can also use the option URL parameter "?offset=x" to paginate search results:' +
 			'<br>' +
 			'<br>' +
-			'<code>appurl/imagesearch/[search query]?offset=2</code>' +
+			'<code>https://thawing-atoll-20447.herokuapp.com/imagesearch/[search query]?offset=2</code>' +
 			'<br>' +
 			'<br>' +
 			'This will return a JSON response where each element is a struct containing the following: ' +
@@ -26,10 +26,10 @@ module.exports = function(app, env) {
 			'<ul>imageDescriptionTags - Tags that describe the image</ul>' +
 			'<br>' +
 			'<br>' +
-			'To view the last 10 search strings use:' +
+			'To view the history of the last 10 search strings use:' +
 			'<br>' +
 			'<br>' +
-			'<code>appurl/latest/imagesearch/</code>' +
+			'<code>https://thawing-atoll-20447.herokuapp.com/latest/imagesearch/</code>' +
 			'<br>' +
 			'<br>'
 		);
