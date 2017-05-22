@@ -1,4 +1,5 @@
 var https = require('https');
+var async = require('async');
 
 module.exports = function(app, env) {
 	app.get('/', function(req, res) {
@@ -35,9 +36,10 @@ module.exports = function(app, env) {
 	});
 
 	app.get('/latest/imagesearch', function(req, res) {
-		res.send(
-			'Last 10 image search strings...'
-		);
+		var latestHistory = getLatestSearchHistory(req);
+
+		console.log(latestHistory);
+		res.send(latestHistory);
 	});
 
 	app.get('/imagesearch/:searchstr(*)', function(req, res) {
@@ -110,3 +112,16 @@ function saveSearchHistory(req) {
 	console.log(currDate);
 	console.log(searchStr);
 };
+
+function getLatestSearchHistory(req) {
+	var db = req.db;
+	var searchHistory = db.collection('searchHistory');
+	var latestHistory = [];
+
+	searchHistory.find().sort({'searchDate':-1}).limit(10).forEach(function(result) {
+		console.log(result);
+		latestHistory.push(result);
+	});
+
+	return latestHistory;
+} 
